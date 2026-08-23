@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>千竹 生日賀卡</title>
+<style>
+  :root{
+    --navy:#0f2557; --orange:#ff8c1a; --orange-2:#ffb35c;
+    --ink:#f4f7ff; --muted:#a9bbe0; --card:#173268; --line:rgba(255,255,255,.12);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:linear-gradient(180deg,#0b1c44 0%,var(--navy) 45%,#0b1c44 100%);
+    color:var(--ink); font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+    -webkit-text-size-adjust:100%; min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+  header{text-align:center;padding:8px 0 18px}
+  h1{margin:0;font-size:26px;letter-spacing:2px}
+  h1 span{color:var(--orange)}
+  .sub{margin:6px 0 0;color:var(--muted);font-size:13px}
+  .hero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;
+        box-shadow:0 12px 32px rgba(0,0,0,.35)}
+  .hero img{width:100%;height:auto;display:block;border-radius:12px;background:#0b1c44}
+  .meta{display:flex;align-items:baseline;gap:10px;margin:12px 2px 10px;flex-wrap:wrap}
+  .date{font-size:22px;font-weight:700}
+  .zodiac{background:rgba(255,140,26,.16);color:var(--orange-2);border:1px solid rgba(255,140,26,.4);
+          border-radius:999px;padding:3px 12px;font-size:13px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{flex:1 1 140px;text-align:center;text-decoration:none;border-radius:12px;padding:13px 14px;
+       font-size:15px;font-weight:600;border:1px solid transparent;cursor:pointer;transition:.15s;
+       font-family:inherit}
+  .btn-main{background:var(--orange);color:#2a1400}
+  .btn-main:active{background:var(--orange-2)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .hint{color:var(--muted);font-size:12px;margin:10px 2px 0;line-height:1.6}
+  h2{font-size:15px;color:var(--muted);font-weight:600;margin:30px 2px 12px;letter-spacing:1px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+  .grid button{padding:0;border:2px solid transparent;background:none;border-radius:12px;
+               cursor:pointer;line-height:0;position:relative}
+  .grid img{width:100%;height:auto;border-radius:10px;display:block}
+  .grid .d{position:absolute;left:0;right:0;bottom:0;
+           background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-size:11px;
+           line-height:1;padding:14px 4px 5px;border-radius:0 0 10px 10px;text-align:center}
+  .grid button[aria-current="true"]{border-color:var(--orange)}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:34px;line-height:1.8}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:#fff;
+         color:#0f2557;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;
+         opacity:0;pointer-events:none;transition:.25s;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>千竹 <span>生日賀卡</span></h1>
+    <p class="sub">每天 09:00 自動更新・最近 30 張</p>
+  </header>
+
+  <div class="hero">
+    <img id="hero" src="" alt="生日賀卡">
+    <div class="meta">
+      <span class="date" id="d"></span>
+      <span class="zodiac" id="z"></span>
+    </div>
+    <div class="btns">
+      <a class="btn btn-main" id="dl" href="" download>下載圖片</a>
+      <button class="btn btn-ghost" id="cp">複製圖片網址</button>
+    </div>
+    <p class="hint">手機若沒跳下載，直接<b>長按圖片</b>→「加入照片」也可以存檔。</p>
+  </div>
+
+  <h2>最近的賀卡</h2>
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    更新時間 2026-08-23 09:54<br>
+    只保留最近 30 張，更早的原始檔在本機「我的雲端硬碟／生日賀卡」。
+  </footer>
+</div>
+<div class="toast" id="toast">已複製網址</div>
+
+<script>
+const CARDS = [
+{day:"2026.08.23",raw:"20260823",z:"處女座",full:"bday/bday-20260823.jpg",thumb:"bday/thumb-20260823.jpg"},
+{day:"2026.08.22",raw:"20260822",z:"獅子座",full:"bday/bday-20260822.jpg",thumb:"bday/thumb-20260822.jpg"},
+{day:"2026.08.21",raw:"20260821",z:"獅子座",full:"bday/bday-20260821.jpg",thumb:"bday/thumb-20260821.jpg"},
+{day:"2026.08.20",raw:"20260820",z:"獅子座",full:"bday/bday-20260820.jpg",thumb:"bday/thumb-20260820.jpg"},
+{day:"2026.08.19",raw:"20260819",z:"獅子座",full:"bday/bday-20260819.jpg",thumb:"bday/thumb-20260819.jpg"},
+{day:"2026.08.18",raw:"20260818",z:"獅子座",full:"bday/bday-20260818.jpg",thumb:"bday/thumb-20260818.jpg"},
+{day:"2026.08.17",raw:"20260817",z:"獅子座",full:"bday/bday-20260817.jpg",thumb:"bday/thumb-20260817.jpg"},
+{day:"2026.08.16",raw:"20260816",z:"獅子座",full:"bday/bday-20260816.jpg",thumb:"bday/thumb-20260816.jpg"},
+{day:"2026.08.15",raw:"20260815",z:"獅子座",full:"bday/bday-20260815.jpg",thumb:"bday/thumb-20260815.jpg"},
+{day:"2026.08.13",raw:"20260813",z:"獅子座",full:"bday/bday-20260813.jpg",thumb:"bday/thumb-20260813.jpg"},
+{day:"2026.08.12",raw:"20260812",z:"獅子座",full:"bday/bday-20260812.jpg",thumb:"bday/thumb-20260812.jpg"},
+{day:"2026.08.11",raw:"20260811",z:"獅子座",full:"bday/bday-20260811.jpg",thumb:"bday/thumb-20260811.jpg"},
+{day:"2026.08.10",raw:"20260810",z:"獅子座",full:"bday/bday-20260810.jpg",thumb:"bday/thumb-20260810.jpg"},
+{day:"2026.08.09",raw:"20260809",z:"獅子座",full:"bday/bday-20260809.jpg",thumb:"bday/thumb-20260809.jpg"},
+{day:"2026.08.08",raw:"20260808",z:"獅子座",full:"bday/bday-20260808.jpg",thumb:"bday/thumb-20260808.jpg"},
+{day:"2026.08.07",raw:"20260807",z:"獅子座",full:"bday/bday-20260807.jpg",thumb:"bday/thumb-20260807.jpg"},
+{day:"2026.08.06",raw:"20260806",z:"獅子座",full:"bday/bday-20260806.jpg",thumb:"bday/thumb-20260806.jpg"},
+{day:"2026.08.05",raw:"20260805",z:"獅子座",full:"bday/bday-20260805.jpg",thumb:"bday/thumb-20260805.jpg"},
+{day:"2026.08.04",raw:"20260804",z:"獅子座",full:"bday/bday-20260804.jpg",thumb:"bday/thumb-20260804.jpg"},
+{day:"2026.08.02",raw:"20260802",z:"獅子座",full:"bday/bday-20260802.jpg",thumb:"bday/thumb-20260802.jpg"},
+{day:"2026.08.01",raw:"20260801",z:"獅子座",full:"bday/bday-20260801.jpg",thumb:"bday/thumb-20260801.jpg"},
+{day:"2026.07.31",raw:"20260731",z:"獅子座",full:"bday/bday-20260731.jpg",thumb:"bday/thumb-20260731.jpg"},
+{day:"2026.07.30",raw:"20260730",z:"獅子座",full:"bday/bday-20260730.jpg",thumb:"bday/thumb-20260730.jpg"},
+{day:"2026.07.29",raw:"20260729",z:"獅子座",full:"bday/bday-20260729.jpg",thumb:"bday/thumb-20260729.jpg"},
+{day:"2026.07.28",raw:"20260728",z:"獅子座",full:"bday/bday-20260728.jpg",thumb:"bday/thumb-20260728.jpg"},
+{day:"2026.07.27",raw:"20260727",z:"獅子座",full:"bday/bday-20260727.jpg",thumb:"bday/thumb-20260727.jpg"},
+{day:"2026.07.26",raw:"20260726",z:"獅子座",full:"bday/bday-20260726.jpg",thumb:"bday/thumb-20260726.jpg"},
+{day:"2026.07.25",raw:"20260725",z:"獅子座",full:"bday/bday-20260725.jpg",thumb:"bday/thumb-20260725.jpg"},
+{day:"2026.07.24",raw:"20260724",z:"獅子座",full:"bday/bday-20260724.jpg",thumb:"bday/thumb-20260724.jpg"},
+{day:"2026.07.23",raw:"20260723",z:"獅子座",full:"bday/bday-20260723.jpg",thumb:"bday/thumb-20260723.jpg"}
+];
+const SITE = "https://charliewang0012.github.io/line-image-host/";
+const hero = document.getElementById('hero'), dEl = document.getElementById('d'),
+      zEl = document.getElementById('z'), dl = document.getElementById('dl'),
+      grid = document.getElementById('grid'), toast = document.getElementById('toast');
+let cur = 0;
+
+function show(i){
+  cur = i;
+  const c = CARDS[i];
+  hero.src = c.full;
+  hero.alt = c.day + ' ' + c.z + ' 生日賀卡';
+  dEl.textContent = c.day;
+  zEl.textContent = c.z;
+  dl.href = c.full;
+  dl.setAttribute('download', 'birthday-' + c.raw + '.jpg');
+  [...grid.children].forEach((b, k) => b.setAttribute('aria-current', k === i ? 'true' : 'false'));
+}
+
+CARDS.forEach((c, i) => {
+  const b = document.createElement('button');
+  b.innerHTML = '<img loading="lazy" src="' + c.thumb + '" alt="' + c.day + '"><span class="d">' +
+                c.day.slice(5) + '</span>';
+  b.onclick = () => { show(i); window.scrollTo({top:0, behavior:'smooth'}); };
+  grid.appendChild(b);
+});
+
+document.getElementById('cp').onclick = async () => {
+  const url = SITE + CARDS[cur].full;
+  try { await navigator.clipboard.writeText(url); }
+  catch (e) {
+    const t = document.createElement('textarea');
+    t.value = url; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); t.remove();
+  }
+  toast.classList.add('on');
+  setTimeout(() => toast.classList.remove('on'), 1500);
+};
+
+show(0);
+</script>
+</body>
+</html>
