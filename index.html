@@ -24,6 +24,39 @@
   .hero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;
         box-shadow:0 12px 32px rgba(0,0,0,.35)}
   .hero img{width:100%;height:auto;display:block;border-radius:12px;background:#0b1c44}
+  .hero img[hidden]{display:none}
+  /* 文字卡：當天沒生圖時頂替，用 CSS 排版不花生圖費用 */
+  .mdbox[hidden]{display:none}
+  .mdcard{border-radius:12px;padding:22px 18px 24px;text-align:center;
+          background:linear-gradient(165deg,#12306e 0%,#0d2050 100%);
+          border:1px solid rgba(255,179,92,.28)}
+  .mc-title{font-size:34px;font-weight:900;letter-spacing:4px;color:#fff;
+            text-shadow:0 2px 0 rgba(255,140,26,.55)}
+  .mc-ribbon{display:inline-block;margin:10px 0 4px;background:var(--orange);color:#2a1400;
+             font-weight:700;font-size:14px;letter-spacing:2px;padding:5px 20px;border-radius:6px}
+  .mc-date{font-size:19px;font-weight:700;color:var(--orange-2);letter-spacing:1px;margin-top:8px}
+  .mc-sign{font-size:40px;line-height:1.2;margin-top:10px;color:#dfe8ff}
+  .mc-z{font-size:16px;font-weight:700;letter-spacing:2px}
+  .mc-line{font-size:13px;color:var(--muted);margin-top:4px;letter-spacing:1px}
+  .mc-panel{margin:18px auto 0;max-width:430px;text-align:left;background:rgba(255,255,255,.07);
+            border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .mc-ph{text-align:center;font-weight:700;letter-spacing:3px;color:var(--orange-2);
+         font-size:15px;margin-bottom:10px}
+  .mc-row{display:flex;gap:8px;align-items:baseline;padding:5px 0;
+          border-top:1px solid rgba(255,255,255,.07);font-size:13px;line-height:1.5}
+  .mc-row:first-of-type{border-top:0}
+  .mc-row span{flex:0 0 62px;color:var(--muted)}
+  .mc-row b{color:var(--orange);letter-spacing:1px;font-size:12px}
+  .mc-row i{font-style:normal;flex:1;min-width:0}
+  .mc-tip{margin:14px auto 0;max-width:430px;font-size:13px;color:var(--muted);line-height:1.7}
+  .mc-bless{margin-top:10px;font-size:24px;font-weight:800;letter-spacing:6px;color:#ffd79a;
+            text-shadow:0 1px 0 rgba(0,0,0,.4)}
+  .mc-bless+.mc-bless{margin-top:2px}
+  .grid .tmd{display:flex;flex-direction:column;align-items:center;justify-content:center;
+             aspect-ratio:1;background:#12306e;border:1px solid rgba(255,179,92,.3);
+             border-radius:10px;font-size:22px;line-height:1}
+  .grid .tmd em{font-style:normal;font-size:11px;color:var(--orange-2);margin-top:5px;
+                letter-spacing:1px}
   .meta{display:flex;align-items:baseline;gap:10px;margin:12px 2px 10px;flex-wrap:wrap}
   .date{font-size:22px;font-weight:700}
   .zodiac{background:rgba(255,140,26,.16);color:var(--orange-2);border:1px solid rgba(255,140,26,.4);
@@ -63,6 +96,7 @@
 
   <div class="hero">
     <img id="hero" src="" alt="生日賀卡">
+    <div class="mdbox" id="mdbox" hidden></div>
     <div class="meta">
       <span class="date" id="d"></span>
       <span class="zodiac" id="z"></span>
@@ -71,7 +105,7 @@
       <a class="btn btn-main" id="dl" href="" download>下載圖片</a>
       <button class="btn btn-ghost" id="cp">複製圖片網址</button>
     </div>
-    <p class="hint">手機若沒跳下載，直接<b>長按圖片</b>→「加入照片」也可以存檔。</p>
+    <p class="hint" id="hint"></p>
   </div>
 
   <h2>最近的賀卡</h2>
@@ -79,7 +113,7 @@
 
   <footer>
     <a class="home" href="https://charliewang0012.github.io/">← 連結中心</a><br>
-    更新時間 2026-08-31 14:01<br>
+    更新時間 2026-09-09 10:47<br>
     只保留最近 30 張，更早的原始檔在本機「我的雲端硬碟／生日賀卡」。
   </footer>
 </div>
@@ -87,65 +121,83 @@
 
 <script>
 const CARDS = [
-{day:"2026.08.31",raw:"20260831",z:"處女座",full:"bday/bday-20260831.jpg",thumb:"bday/thumb-20260831.jpg"},
-{day:"2026.08.23",raw:"20260823",z:"處女座",full:"bday/bday-20260823.jpg",thumb:"bday/thumb-20260823.jpg"},
-{day:"2026.08.22",raw:"20260822",z:"獅子座",full:"bday/bday-20260822.jpg",thumb:"bday/thumb-20260822.jpg"},
-{day:"2026.08.21",raw:"20260821",z:"獅子座",full:"bday/bday-20260821.jpg",thumb:"bday/thumb-20260821.jpg"},
-{day:"2026.08.20",raw:"20260820",z:"獅子座",full:"bday/bday-20260820.jpg",thumb:"bday/thumb-20260820.jpg"},
-{day:"2026.08.19",raw:"20260819",z:"獅子座",full:"bday/bday-20260819.jpg",thumb:"bday/thumb-20260819.jpg"},
-{day:"2026.08.18",raw:"20260818",z:"獅子座",full:"bday/bday-20260818.jpg",thumb:"bday/thumb-20260818.jpg"},
-{day:"2026.08.17",raw:"20260817",z:"獅子座",full:"bday/bday-20260817.jpg",thumb:"bday/thumb-20260817.jpg"},
-{day:"2026.08.16",raw:"20260816",z:"獅子座",full:"bday/bday-20260816.jpg",thumb:"bday/thumb-20260816.jpg"},
-{day:"2026.08.15",raw:"20260815",z:"獅子座",full:"bday/bday-20260815.jpg",thumb:"bday/thumb-20260815.jpg"},
-{day:"2026.08.13",raw:"20260813",z:"獅子座",full:"bday/bday-20260813.jpg",thumb:"bday/thumb-20260813.jpg"},
-{day:"2026.08.12",raw:"20260812",z:"獅子座",full:"bday/bday-20260812.jpg",thumb:"bday/thumb-20260812.jpg"},
-{day:"2026.08.11",raw:"20260811",z:"獅子座",full:"bday/bday-20260811.jpg",thumb:"bday/thumb-20260811.jpg"},
-{day:"2026.08.10",raw:"20260810",z:"獅子座",full:"bday/bday-20260810.jpg",thumb:"bday/thumb-20260810.jpg"},
-{day:"2026.08.09",raw:"20260809",z:"獅子座",full:"bday/bday-20260809.jpg",thumb:"bday/thumb-20260809.jpg"},
-{day:"2026.08.08",raw:"20260808",z:"獅子座",full:"bday/bday-20260808.jpg",thumb:"bday/thumb-20260808.jpg"},
-{day:"2026.08.07",raw:"20260807",z:"獅子座",full:"bday/bday-20260807.jpg",thumb:"bday/thumb-20260807.jpg"},
-{day:"2026.08.06",raw:"20260806",z:"獅子座",full:"bday/bday-20260806.jpg",thumb:"bday/thumb-20260806.jpg"},
-{day:"2026.08.05",raw:"20260805",z:"獅子座",full:"bday/bday-20260805.jpg",thumb:"bday/thumb-20260805.jpg"},
-{day:"2026.08.04",raw:"20260804",z:"獅子座",full:"bday/bday-20260804.jpg",thumb:"bday/thumb-20260804.jpg"},
-{day:"2026.08.02",raw:"20260802",z:"獅子座",full:"bday/bday-20260802.jpg",thumb:"bday/thumb-20260802.jpg"},
-{day:"2026.08.01",raw:"20260801",z:"獅子座",full:"bday/bday-20260801.jpg",thumb:"bday/thumb-20260801.jpg"},
-{day:"2026.07.31",raw:"20260731",z:"獅子座",full:"bday/bday-20260731.jpg",thumb:"bday/thumb-20260731.jpg"},
-{day:"2026.07.30",raw:"20260730",z:"獅子座",full:"bday/bday-20260730.jpg",thumb:"bday/thumb-20260730.jpg"},
-{day:"2026.07.29",raw:"20260729",z:"獅子座",full:"bday/bday-20260729.jpg",thumb:"bday/thumb-20260729.jpg"},
-{day:"2026.07.28",raw:"20260728",z:"獅子座",full:"bday/bday-20260728.jpg",thumb:"bday/thumb-20260728.jpg"},
-{day:"2026.07.27",raw:"20260727",z:"獅子座",full:"bday/bday-20260727.jpg",thumb:"bday/thumb-20260727.jpg"},
-{day:"2026.07.26",raw:"20260726",z:"獅子座",full:"bday/bday-20260726.jpg",thumb:"bday/thumb-20260726.jpg"},
-{day:"2026.07.25",raw:"20260725",z:"獅子座",full:"bday/bday-20260725.jpg",thumb:"bday/thumb-20260725.jpg"},
-{day:"2026.07.24",raw:"20260724",z:"獅子座",full:"bday/bday-20260724.jpg",thumb:"bday/thumb-20260724.jpg"}
+{day:"2026.09.09",raw:"20260909",z:"處女座",kind:"md",md:"bday/bday-20260909.md",html:"<div class=\"mdcard\"><div class=\"mc-title\">生日快樂</div><div class=\"mc-ribbon\">千竹 祝福您</div><div class=\"mc-date\">2026.09.09</div><div class=\"mc-sign\">♍</div><div class=\"mc-z\">處女座</div><div class=\"mc-line\">細膩用心・溫暖體貼</div><div class=\"mc-panel\"><div class=\"mc-ph\">今日好運報</div><div class=\"mc-row\"><span>整體運</span><b>★★★☆☆</b><i>因愛情滋潤而神清氣爽，多溝通讓感情更上一層；事業平順穩定</i></div><div class=\"mc-row\"><span>愛情運</span><b>★★★★☆</b><i>單身者戀愛機會多，激情燃燒，好好享受愛情的喜悅與甜蜜</i></div><div class=\"mc-row\"><span>開運顏色</span><i>芙蓉晶粉</i></div><div class=\"mc-row\"><span>開運方位</span><i>東南方向</i></div><div class=\"mc-row\"><span>幸運數字</span><i>3</i></div><div class=\"mc-row\"><span>貴人星座</span><i>金牛座</i></div><div class=\"mc-row\"><span>吉時</span><i>上午 5:00–7:00</i></div></div><div class=\"mc-tip\">今天主動請客、多走動，人際關係會有正面加分。</div><div class=\"mc-bless\">平安順心</div><div class=\"mc-bless\">萬事如意</div></div>"},
+{day:"2026.08.31",raw:"20260831",z:"處女座",kind:"img",full:"bday/bday-20260831.jpg",thumb:"bday/thumb-20260831.jpg"},
+{day:"2026.08.23",raw:"20260823",z:"處女座",kind:"img",full:"bday/bday-20260823.jpg",thumb:"bday/thumb-20260823.jpg"},
+{day:"2026.08.22",raw:"20260822",z:"獅子座",kind:"img",full:"bday/bday-20260822.jpg",thumb:"bday/thumb-20260822.jpg"},
+{day:"2026.08.21",raw:"20260821",z:"獅子座",kind:"img",full:"bday/bday-20260821.jpg",thumb:"bday/thumb-20260821.jpg"},
+{day:"2026.08.20",raw:"20260820",z:"獅子座",kind:"img",full:"bday/bday-20260820.jpg",thumb:"bday/thumb-20260820.jpg"},
+{day:"2026.08.19",raw:"20260819",z:"獅子座",kind:"img",full:"bday/bday-20260819.jpg",thumb:"bday/thumb-20260819.jpg"},
+{day:"2026.08.18",raw:"20260818",z:"獅子座",kind:"img",full:"bday/bday-20260818.jpg",thumb:"bday/thumb-20260818.jpg"},
+{day:"2026.08.17",raw:"20260817",z:"獅子座",kind:"img",full:"bday/bday-20260817.jpg",thumb:"bday/thumb-20260817.jpg"},
+{day:"2026.08.16",raw:"20260816",z:"獅子座",kind:"img",full:"bday/bday-20260816.jpg",thumb:"bday/thumb-20260816.jpg"},
+{day:"2026.08.15",raw:"20260815",z:"獅子座",kind:"img",full:"bday/bday-20260815.jpg",thumb:"bday/thumb-20260815.jpg"},
+{day:"2026.08.13",raw:"20260813",z:"獅子座",kind:"img",full:"bday/bday-20260813.jpg",thumb:"bday/thumb-20260813.jpg"},
+{day:"2026.08.12",raw:"20260812",z:"獅子座",kind:"img",full:"bday/bday-20260812.jpg",thumb:"bday/thumb-20260812.jpg"},
+{day:"2026.08.11",raw:"20260811",z:"獅子座",kind:"img",full:"bday/bday-20260811.jpg",thumb:"bday/thumb-20260811.jpg"},
+{day:"2026.08.10",raw:"20260810",z:"獅子座",kind:"img",full:"bday/bday-20260810.jpg",thumb:"bday/thumb-20260810.jpg"},
+{day:"2026.08.09",raw:"20260809",z:"獅子座",kind:"img",full:"bday/bday-20260809.jpg",thumb:"bday/thumb-20260809.jpg"},
+{day:"2026.08.08",raw:"20260808",z:"獅子座",kind:"img",full:"bday/bday-20260808.jpg",thumb:"bday/thumb-20260808.jpg"},
+{day:"2026.08.07",raw:"20260807",z:"獅子座",kind:"img",full:"bday/bday-20260807.jpg",thumb:"bday/thumb-20260807.jpg"},
+{day:"2026.08.06",raw:"20260806",z:"獅子座",kind:"img",full:"bday/bday-20260806.jpg",thumb:"bday/thumb-20260806.jpg"},
+{day:"2026.08.05",raw:"20260805",z:"獅子座",kind:"img",full:"bday/bday-20260805.jpg",thumb:"bday/thumb-20260805.jpg"},
+{day:"2026.08.04",raw:"20260804",z:"獅子座",kind:"img",full:"bday/bday-20260804.jpg",thumb:"bday/thumb-20260804.jpg"},
+{day:"2026.08.02",raw:"20260802",z:"獅子座",kind:"img",full:"bday/bday-20260802.jpg",thumb:"bday/thumb-20260802.jpg"},
+{day:"2026.08.01",raw:"20260801",z:"獅子座",kind:"img",full:"bday/bday-20260801.jpg",thumb:"bday/thumb-20260801.jpg"},
+{day:"2026.07.31",raw:"20260731",z:"獅子座",kind:"img",full:"bday/bday-20260731.jpg",thumb:"bday/thumb-20260731.jpg"},
+{day:"2026.07.30",raw:"20260730",z:"獅子座",kind:"img",full:"bday/bday-20260730.jpg",thumb:"bday/thumb-20260730.jpg"},
+{day:"2026.07.29",raw:"20260729",z:"獅子座",kind:"img",full:"bday/bday-20260729.jpg",thumb:"bday/thumb-20260729.jpg"},
+{day:"2026.07.28",raw:"20260728",z:"獅子座",kind:"img",full:"bday/bday-20260728.jpg",thumb:"bday/thumb-20260728.jpg"},
+{day:"2026.07.27",raw:"20260727",z:"獅子座",kind:"img",full:"bday/bday-20260727.jpg",thumb:"bday/thumb-20260727.jpg"},
+{day:"2026.07.26",raw:"20260726",z:"獅子座",kind:"img",full:"bday/bday-20260726.jpg",thumb:"bday/thumb-20260726.jpg"},
+{day:"2026.07.25",raw:"20260725",z:"獅子座",kind:"img",full:"bday/bday-20260725.jpg",thumb:"bday/thumb-20260725.jpg"}
 ];
 const SITE = "https://charliewang0012.github.io/line-image-host/";
 const hero = document.getElementById('hero'), dEl = document.getElementById('d'),
       zEl = document.getElementById('z'), dl = document.getElementById('dl'),
-      grid = document.getElementById('grid'), toast = document.getElementById('toast');
+      grid = document.getElementById('grid'), toast = document.getElementById('toast'),
+      mdbox = document.getElementById('mdbox'), cp = document.getElementById('cp'),
+      hint = document.getElementById('hint');
 let cur = 0;
+
+const fileOf = c => c.kind === 'md' ? c.md : c.full;
 
 function show(i){
   cur = i;
   const c = CARDS[i];
-  hero.src = c.full;
-  hero.alt = c.day + ' ' + c.z + ' 生日賀卡';
+  const isMd = c.kind === 'md';
+  hero.hidden = isMd;
+  mdbox.hidden = !isMd;
+  if (isMd) {
+    mdbox.innerHTML = c.html;
+  } else {
+    hero.src = c.full;
+    hero.alt = c.day + ' ' + c.z + ' 生日賀卡';
+  }
   dEl.textContent = c.day;
   zEl.textContent = c.z;
-  dl.href = c.full;
-  dl.setAttribute('download', 'birthday-' + c.raw + '.jpg');
+  dl.href = fileOf(c);
+  dl.setAttribute('download', 'birthday-' + c.raw + (isMd ? '.md' : '.jpg'));
+  dl.textContent = isMd ? '下載文字檔' : '下載圖片';
+  cp.textContent = isMd ? '複製檔案網址' : '複製圖片網址';
+  hint.innerHTML = isMd
+    ? '這天沒有生圖，改用文字卡。要整張圖片轉傳的話，補上生圖額度後重跑就會換回來。'
+    : '手機若沒跳下載，直接<b>長按圖片</b>→「加入照片」也可以存檔。';
   [...grid.children].forEach((b, k) => b.setAttribute('aria-current', k === i ? 'true' : 'false'));
 }
 
 CARDS.forEach((c, i) => {
   const b = document.createElement('button');
-  b.innerHTML = '<img loading="lazy" src="' + c.thumb + '" alt="' + c.day + '"><span class="d">' +
-                c.day.slice(5) + '</span>';
+  const face = c.kind === 'md'
+    ? '<span class="tmd">🎂<em>' + c.z + '</em></span>'
+    : '<img loading="lazy" src="' + c.thumb + '" alt="' + c.day + '">';
+  b.innerHTML = face + '<span class="d">' + c.day.slice(5) + '</span>';
   b.onclick = () => { show(i); window.scrollTo({top:0, behavior:'smooth'}); };
   grid.appendChild(b);
 });
 
-document.getElementById('cp').onclick = async () => {
-  const url = SITE + CARDS[cur].full;
+cp.onclick = async () => {
+  const url = SITE + fileOf(CARDS[cur]);
   try { await navigator.clipboard.writeText(url); }
   catch (e) {
     const t = document.createElement('textarea');
