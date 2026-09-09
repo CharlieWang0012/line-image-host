@@ -25,33 +25,14 @@
         box-shadow:0 12px 32px rgba(0,0,0,.35)}
   .hero img{width:100%;height:auto;display:block;border-radius:12px;background:#0b1c44}
   .hero img[hidden]{display:none}
-  /* 文字卡：當天沒生圖時頂替，用 CSS 排版不花生圖費用 */
+  /* 文字卡：當天沒生圖時頂替，直接顯示 md 原文 */
   .mdbox[hidden]{display:none}
-  .mdcard{border-radius:12px;padding:22px 18px 24px;text-align:center;
-          background:linear-gradient(165deg,#12306e 0%,#0d2050 100%);
-          border:1px solid rgba(255,179,92,.28)}
-  .mc-title{font-size:34px;font-weight:900;letter-spacing:4px;color:#fff;
-            text-shadow:0 2px 0 rgba(255,140,26,.55)}
-  .mc-ribbon{display:inline-block;margin:10px 0 4px;background:var(--orange);color:#2a1400;
-             font-weight:700;font-size:14px;letter-spacing:2px;padding:5px 20px;border-radius:6px}
-  .mc-date{font-size:19px;font-weight:700;color:var(--orange-2);letter-spacing:1px;margin-top:8px}
-  .mc-sign{font-size:40px;line-height:1.2;margin-top:10px;color:#dfe8ff}
-  .mc-z{font-size:16px;font-weight:700;letter-spacing:2px}
-  .mc-line{font-size:13px;color:var(--muted);margin-top:4px;letter-spacing:1px}
-  .mc-panel{margin:18px auto 0;max-width:430px;text-align:left;background:rgba(255,255,255,.07);
-            border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-  .mc-ph{text-align:center;font-weight:700;letter-spacing:3px;color:var(--orange-2);
-         font-size:15px;margin-bottom:10px}
-  .mc-row{display:flex;gap:8px;align-items:baseline;padding:5px 0;
-          border-top:1px solid rgba(255,255,255,.07);font-size:13px;line-height:1.5}
-  .mc-row:first-of-type{border-top:0}
-  .mc-row span{flex:0 0 62px;color:var(--muted)}
-  .mc-row b{color:var(--orange);letter-spacing:1px;font-size:12px}
-  .mc-row i{font-style:normal;flex:1;min-width:0}
-  .mc-tip{margin:14px auto 0;max-width:430px;font-size:13px;color:var(--muted);line-height:1.7}
-  .mc-bless{margin-top:10px;font-size:24px;font-weight:800;letter-spacing:6px;color:#ffd79a;
-            text-shadow:0 1px 0 rgba(0,0,0,.4)}
-  .mc-bless+.mc-bless{margin-top:2px}
+  .mdbox{margin:0;border-radius:12px;padding:18px 16px;background:#0b1c44;
+         border:1px solid var(--line);color:var(--ink);
+         font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,
+                     "Noto Sans TC","PingFang TC","Microsoft JhengHei",monospace;
+         font-size:13px;line-height:1.9;white-space:pre-wrap;word-break:break-word;
+         overflow-x:auto;-webkit-overflow-scrolling:touch}
   .grid .tmd{display:flex;flex-direction:column;align-items:center;justify-content:center;
              aspect-ratio:1;background:#12306e;border:1px solid rgba(255,179,92,.3);
              border-radius:10px;font-size:22px;line-height:1}
@@ -96,7 +77,7 @@
 
   <div class="hero">
     <img id="hero" src="" alt="生日賀卡">
-    <div class="mdbox" id="mdbox" hidden></div>
+    <pre class="mdbox" id="mdbox" hidden></pre>
     <div class="meta">
       <span class="date" id="d"></span>
       <span class="zodiac" id="z"></span>
@@ -113,7 +94,7 @@
 
   <footer>
     <a class="home" href="https://charliewang0012.github.io/">← 連結中心</a><br>
-    更新時間 2026-09-09 10:47<br>
+    更新時間 2026-09-09 12:20<br>
     只保留最近 30 張，更早的原始檔在本機「我的雲端硬碟／生日賀卡」。
   </footer>
 </div>
@@ -121,7 +102,7 @@
 
 <script>
 const CARDS = [
-{day:"2026.09.09",raw:"20260909",z:"處女座",kind:"md",md:"bday/bday-20260909.md",html:"<div class=\"mdcard\"><div class=\"mc-title\">生日快樂</div><div class=\"mc-ribbon\">千竹 祝福您</div><div class=\"mc-date\">2026.09.09</div><div class=\"mc-sign\">♍</div><div class=\"mc-z\">處女座</div><div class=\"mc-line\">細膩用心・溫暖體貼</div><div class=\"mc-panel\"><div class=\"mc-ph\">今日好運報</div><div class=\"mc-row\"><span>整體運</span><b>★★★☆☆</b><i>因愛情滋潤而神清氣爽，多溝通讓感情更上一層；事業平順穩定</i></div><div class=\"mc-row\"><span>愛情運</span><b>★★★★☆</b><i>單身者戀愛機會多，激情燃燒，好好享受愛情的喜悅與甜蜜</i></div><div class=\"mc-row\"><span>開運顏色</span><i>芙蓉晶粉</i></div><div class=\"mc-row\"><span>開運方位</span><i>東南方向</i></div><div class=\"mc-row\"><span>幸運數字</span><i>3</i></div><div class=\"mc-row\"><span>貴人星座</span><i>金牛座</i></div><div class=\"mc-row\"><span>吉時</span><i>上午 5:00–7:00</i></div></div><div class=\"mc-tip\">今天主動請客、多走動，人際關係會有正面加分。</div><div class=\"mc-bless\">平安順心</div><div class=\"mc-bless\">萬事如意</div></div>"},
+{day:"2026.09.09",raw:"20260909",z:"處女座",kind:"md",md:"bday/bday-20260909.md",text:"# 🎂 生日快樂\n\n**千竹 祝福您** ・ 2026.09.09\n\n## ♍ 處女座\n> 細膩用心・溫暖體貼\n\n## 今日好運報\n\n| 項目 | 指數 | 短評 |\n|------|------|------|\n| 整體運 | ★★★☆☆ | 因愛情滋潤而神清氣爽，多溝通讓感情更上一層；事業平順穩定 |\n| 愛情運 | ★★★★☆ | 單身者戀愛機會多，激情燃燒，好好享受愛情的喜悅與甜蜜 |\n\n- **開運顏色**：芙蓉晶粉\n- **開運方位**：東南方向\n- **幸運數字**：3\n- **貴人星座**：金牛座\n- **吉　　時**：上午 5:00–7:00\n\n💡 今天主動請客、多走動，人際關係會有正面加分。\n\n---\n\n## 平安順心\n## 萬事如意"},
 {day:"2026.08.31",raw:"20260831",z:"處女座",kind:"img",full:"bday/bday-20260831.jpg",thumb:"bday/thumb-20260831.jpg"},
 {day:"2026.08.23",raw:"20260823",z:"處女座",kind:"img",full:"bday/bday-20260823.jpg",thumb:"bday/thumb-20260823.jpg"},
 {day:"2026.08.22",raw:"20260822",z:"獅子座",kind:"img",full:"bday/bday-20260822.jpg",thumb:"bday/thumb-20260822.jpg"},
@@ -169,7 +150,7 @@ function show(i){
   hero.hidden = isMd;
   mdbox.hidden = !isMd;
   if (isMd) {
-    mdbox.innerHTML = c.html;
+    mdbox.textContent = c.text;
   } else {
     hero.src = c.full;
     hero.alt = c.day + ' ' + c.z + ' 生日賀卡';
@@ -181,7 +162,7 @@ function show(i){
   dl.textContent = isMd ? '下載文字檔' : '下載圖片';
   cp.textContent = isMd ? '複製檔案網址' : '複製圖片網址';
   hint.innerHTML = isMd
-    ? '這天沒有生圖，改用文字卡。要整張圖片轉傳的話，補上生圖額度後重跑就會換回來。'
+    ? '這天沒有生圖，直接顯示 md 原文。要整張圖片轉傳的話，補上生圖額度後重跑就會換回來。'
     : '手機若沒跳下載，直接<b>長按圖片</b>→「加入照片」也可以存檔。';
   [...grid.children].forEach((b, k) => b.setAttribute('aria-current', k === i ? 'true' : 'false'));
 }
